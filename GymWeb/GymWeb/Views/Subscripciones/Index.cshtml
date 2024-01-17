@@ -1,0 +1,117 @@
+﻿@using GymWeb.Entities;
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var model = JsonConvert.DeserializeObject<SubscripcionEnt>(HttpContextAccessor.HttpContext.Session.GetString("subscripcion"));
+    var idPaquete = model.idPaquete;
+}
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script async
+        src="https://js.stripe.com/v3/buy-button.js">
+</script>
+
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+    <div class="col">
+        <div class="card h-100">
+            <img class="card-img-top" src="~/img/gold.png" alt="Gold plan" />
+            <div class="card-body">
+                <h5 class="card-title">Subscripción gold <b>(CRC 20,000)</b> </h5>
+                <ul>
+                    <li>Ingreso al gimnasio.</li>
+                    <li>Uso de lockers.</li>
+                    <li>Asistencia por parte de los entrenadores generales.</li>
+                    <li>Ingreso completamente digital.</li>
+                    <li>Uso de nuestras plataformas digitales.</li>
+                </ul>
+                @if (model.idPaquete == 0 )
+                {
+                    <form action="/create-checkout-session/CreatePlanGold" method="POST">
+                        <button type="submit" class="btn btn-dark">Adquiere este plan</button>
+                    </form>
+                }
+                else if (model.idPaquete != 1)
+                {
+                    <h5 class="text-center">Ya tienes un plan contratado, para modificar, presentate al gimnasio.</h5>
+                }
+                else
+                {
+                    <h5 class="text-center">Ya posees este plan :)</h5>
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <img class="card-img-top" src="~/img/black.png" alt="Black plan" />
+            <div class="card-body">
+                <h5 class="card-title">Subscripción black <b>(CRC 30,000)</b> </h5>
+                <ul>
+                    <li>Ingreso al gimnasio.</li>
+                    <li>Uso de lockers.</li>
+                    <li>Asistencia por parte de los entrenadores generales.</li>
+                    <li>Ingreso completamente digital.</li>
+                    <li>Uso de nuestras plataformas digitales.</li>
+                    <li>Puedes llevar un amigo 4 veces al mes.</li>
+                    <li>Uso de nuestas salas de spa.</li>
+                    <li>Uso seguimiento controlado de pesos y mediciones.</li>
+                </ul>
+                @if (model.idPaquete == 0)
+                {
+                    <form action="/create-checkout-session/CreatePlanBlack" method="POST">
+                        <button type="submit" class="btn btn-dark">Adquiere este plan</button>
+                    </form>
+                }
+                else if (model.idPaquete != 2)
+                {
+                    <h5 class="text-center">Ya tienes un plan contratado, para modificar, presentate al gimnasio.</h5>
+                }
+                else
+                {
+                    <h5 class="text-center">Ya posees este plan :)</h5>
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100">
+            <img class="card-img-top" src="~/img/platinum.png" alt="Platinum plan" />
+            <div class="card-body">
+                <h5 class="card-title">Subscripción platinum <b>(CRC 45,000)</b> </h5>
+                <ul>
+                    <li>Ingreso al gimnasio.</li>
+                    <li>Uso de lockers.</li>
+                    <li>Asistencia por parte de los entrenadores generales.</li>
+                    <li>Ingreso completamente digital.</li>
+                    <li>Uso de nuestras plataformas digitales.</li>
+                    <li>Puedes llevar un amigo 4 veces al mes.</li>
+                    <li>Uso de nuestas salas de spa.</li>
+                    <li>Uso seguimiento controlado de pesos y mediciones.</li>
+                    <li>Nutricionista personalidado para tus objetivos.</li>
+                    <li>Ayuda de personals trainings 2 veces al mes.</li>
+                </ul>
+                @if (model.idPaquete == 0)
+                {
+                    <form action="/create-checkout-session/CreatePlanPlatinum" method="POST">
+                        <button type="submit" class="btn btn-dark">Adquiere este plan</button>
+                    </form>
+                }
+                else if (model.idPaquete != 3)
+                {
+                    <h5 class="text-center">Ya tienes un plan contratado, para modificar, presentate al gimnasio.</h5>
+                }
+                else
+                {
+                    <h5 class="text-center">Ya posees este plan :)</h5>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

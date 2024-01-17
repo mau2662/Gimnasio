@@ -1,0 +1,141 @@
+﻿@model IEnumerable<GymWeb.Entities.EjerciciosEnt>
+
+@{
+    ViewData["Title"] = "ConsultarEjercicio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Estilos{
+    <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet" />
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Ejercicios del Sistema</h4>
+
+            <table id="tbEjejrcicios" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="text-align:center">Nombre del Ejercicio</th>
+                        <th style="text-align:center">Descripción del Ejercicio</th>
+                        <th style="text-align:center">Video Demostración</th>
+                        <th style="text-align:center">Eliminar Ejercicio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="text-align:center">@item.NombreEjercicio</td>
+                            <td style="text-align:center">@item.DescripcionEjercicio</td>
+                            <td style="text-align:center">
+                                <a href="#" class="video-link " data-video="@item.VideoEjercicio" data-toggle="modal" data-target="#videoModal">   <i class="fa fa-play fa-lg "></i></a>
+                             
+                            </td>
+                            <td style="text-align:center">
+                                <a href="#" onclick="eliminarEjercicio('@item.IdEjercicio')">
+                                    <i class="fa fa-trash fa-lg text-danger"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="videoModalLabel">Video Demostrativo</h5>
+                  
+                </div>
+                <div class="modal-body">
+                    <div id="player"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var player;
+
+        $(document).ready(function () {
+            $('#tbEjejrcicios').DataTable({
+                "language": {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                }
+                
+            });
+
+            $('.video-link').on('click', function (event) {
+                event.preventDefault();
+                var videoId = obtenerVideoId($(this).data('video'));
+
+                $('#videoModal').on('shown.bs.modal', function () {
+                    if (player) {
+                        player.destroy();
+                    }
+                    initPlayer(videoId);
+                }).modal('show');
+            });
+
+            $('#videoModal').on('hide.bs.modal', function () {
+                if (player) {
+                    player.stopVideo();
+                }
+            });
+        });
+
+        function initPlayer(videoId) {
+            player = new YT.Player('player', {
+                height: '360',
+                width: '100%',
+                videoId: videoId,
+            });
+        }
+
+        function obtenerVideoId(url) {
+            var videoId = url.split('v=')[1];
+            var ampersandPosition = videoId.indexOf('&');
+            if (ampersandPosition !== -1) {
+                videoId = videoId.substring(0, ampersandPosition);
+            }
+            return videoId;
+        }
+
+        var urlEliminarEjercicio = '@Url.Action("EliminarEjercicio", "Ejercicio")';
+
+        function eliminarEjercicio(idEjercicio) {
+            confirmarEliminacion(idEjercicio);
+        }
+
+        function confirmarEliminacion(idEjercicio) {
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Una vez eliminada, no podrás recuperar este ejercicio",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminar ejercicio",
+                cancelButtonText: "Cancelar",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = urlEliminarEjercicio + "?q=" + idEjercicio;
+                }
+            });
+        }
+    </script>
+
+}

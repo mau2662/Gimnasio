@@ -1,0 +1,148 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-lg-12 mb-4 order-0">
+    <div class="card">
+        <div class="d-flex align-items-end row">
+            <div class="col-sm-7">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Bienvenida(o) gracias nuevamente por estar acá ❤️</h5>
+                    <p class="mb-4">
+                        Acá podrás ver un historial de tus mediciones, solo para que puedas llevar un control de la información registrada por nuestros entrenadores, es un gusto poder ayudarte con tus objetivos ;)
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-5 text-center text-sm-left">
+                <div class="card-body pb-0 px-0 px-md-4">
+                    <img src="../assets/img/illustrations/man-with-laptop-light.png"
+                         height="140"
+                         alt="View Badge User"
+                         data-app-dark-img="illustrations/man-with-laptop-dark.png"
+                         data-app-light-img="illustrations/man-with-laptop-light.png" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-6 col-lg-6 col-xl-6 order-0 mb-4">
+        <div class="card h-100">
+            <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                <div class="card-title mb-0">
+                    <h5 class="m-0 me-2">Composición corporal</h5>
+                    <small class="text-muted">Ultima medición: @DateTime.Today.ToShortDateString()</small>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex flex-column align-items-center gap-1">
+                        <h2 class="mb-2">85 Kg</h2>
+                        <span>Peso actual</span>
+                    </div>
+@*                    <div id="orderStatisticsChart"></div>*@
+                </div>
+                <ul class="p-0 m-0">
+
+                    <li class="d-flex mb-4 pb-1">
+                        <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-primary">
+                                <i class="bx bx-mobile-alt"></i>
+                            </span>
+                        </div>
+                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                                <h6 class="mb-0">IMC</h6>
+                                <small class="text-muted">Cantidad de musculo en tu cuerpo</small>
+                            </div>
+                            <div class="user-progress">
+                                <small class="fw-semibold">22%</small>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="d-flex mb-4 pb-1">
+                        <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
+                        </div>
+                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                                <h6 class="mb-0">Circunferencia abdominal</h6>
+                                <small class="text-muted">La medida de tu grasa abdominal</small>
+                            </div>
+                            <div class="user-progress">
+                                <small class="fw-semibold">98 cm</small>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="d-flex mb-4 pb-1">
+                        <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-info"><i class="bx bx-home-alt"></i></span>
+                        </div>
+                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                                <h6 class="mb-0">Musculatura brazos</h6>
+                                <small class="text-muted">Medida general de tus biceps y triceps :D</small>
+                            </div>
+                            <div class="user-progress">
+                                <small class="fw-semibold">20 cm</small>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="d-flex">
+                        <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-secondary">
+                                <i class="bx bx-football"></i>
+                            </span>
+                        </div>
+                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                                <h6 class="mb-0">Musculatura piernas</h6>
+                                <small class="text-muted">El tamaño de tus piertas también es importante</small>
+                            </div>
+                            <div class="user-progress">
+                                <small class="fw-semibold">40 cm</small>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-6 col-xl-6 order-0 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+                    <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                        <div class="card-title">
+                            <h5 class="text-nowrap mb-2">Seguimiento mensual</h5>
+                            <span class="badge bg-label-warning rounded-pill">Año 2023</span>
+                        </div>
+                        <div class="mt-sm-auto">
+                            <small class="text-success text-nowrap fw-semibold"><i class="bx bx-chevron-down"></i> 68.2%</small>
+                            <h3 class="mb-0">87 Kg</h3>
+                            <small class="text-muted">Mes anterior</small>
+                        </div>
+                    </div>
+                    <div id="incomeChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@section Scripts {
+    <script src="~/js/home/charts.js"></script>
+}
+
+
+

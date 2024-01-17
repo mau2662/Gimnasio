@@ -1,0 +1,57 @@
+﻿@model List<GymWeb.Entities.PagosEnt>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-lg-12 mb-4 order-0">
+    <div class="card">
+        <div class="d-flex align-items-end row">
+            <div class="col-sm-12">
+                <div class="card-body">
+                    <h5 class="card-title text-primary mb-5">Historial de pagos realizados</h5>
+                    <div class="table-responsive text-nowrap">
+                        <table class="table" width="100%" id="pagosTable">
+                            <thead>
+                                <tr>
+                                    <th>Paquete</th>
+                                    <th>Monto de pago</th>
+                                    <th>Fecha de pago</th>
+                                    <th>Fecha sugerida de proximo pago</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Nombre</td>
+                                        <td>@item.MontoPago.ToString("N2")</td>
+                                        <td>@item.FechaCreacionPago.ToString("dd/MM/yyyy")</td>
+                                        <td>@item.FechaCreacionPago.AddMonths(1).ToString("dd/MM/yyyy")</td>
+                                    </tr>                                   
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#pagosTable').DataTable({
+                "language": {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                },
+                "lengthChange": false
+            });
+        });
+    </script>
+}

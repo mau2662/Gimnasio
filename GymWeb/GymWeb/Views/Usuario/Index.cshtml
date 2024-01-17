@@ -1,0 +1,133 @@
+﻿@model IEnumerable<GymWeb.Entities.UsuarioEnt>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="col-lg-12 mb-4 order-0">
+    <div class="card">
+        <div class="d-flex align-items-end row">
+            <div class="col-sm-12">
+                <div class="card-body">
+                    <h5 class="card-title text-primary mb-5">Usuarios registrados en el sistema</h5>
+                    
+
+                    <div class="table-responsive">
+                        <table class="table table-sm" width="100%" id="usuariosTable">
+                            <thead>
+                                <tr>
+                                    <th>Identificacion</th>
+                                    <th>Nombre Completo</th>
+                                    <th>Correo</th>
+                                    <th>Telefono</th>
+                                    <th>Tipo Rol</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Identificacion</td>
+                                        <td>@item.NombreCompleto</td>
+                                        <td>@item.Correo</td>
+                                        <td>@item.Telefono</td>
+                                        <td>
+                                            @if (@item.NombreRol == null)
+                                            {
+                                                <text>Rol no asignado</text>
+                                            }
+                                            else
+                                            {
+                                                @item.NombreRol
+                                            }
+                                        </td>
+                                        @if (@item.Estado)
+                                        {
+                                            <td><span class="badge bg-label-success me-1">Activo</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span class="badge bg-label-warning me-1">Desactivo</span></td>
+                                        }
+
+                                        <td>
+                                            <div class="dropdown">
+                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="@Url.Action("ModificarUsuario","Usuario", new { q = item.IdUsuario })"><i class="bx bx-edit-alt me-1"></i> Editar</a>
+
+                                                    @if (@item.Estado)
+                                                    {
+                                                        <a class="dropdown-item" href="@Url.Action("ActualizarEstadoUsuario","Usuario", new { IdUsuario = item.IdUsuario, Estado = false })"><i class="bx bx-edit-alt me-1"></i> Cambiar estado a desactivo</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="dropdown-item" href="@Url.Action("ActualizarEstadoUsuario","Usuario", new { IdUsuario = item.IdUsuario, Estado = true  })"><i class="bx bx-edit-alt me-1"></i> Cambiar estado a activo</a>
+                                                    }
+
+                                                    <a class="dropdown-item" href="@Url.Action("EliminarUsuario","Usuario", new { IdUsuario = item.IdUsuario })"><i class="bx bx-trash me-1"></i> Eliminar</a>
+                                                </div>
+                                            </div>
+                                        </td>
+
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    @if (TempData["error"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Ha ocurrido un error..',
+                html: '@TempData["error"].ToString()'
+            })
+        </script>
+    }
+
+    @if (TempData["success"] != null)
+    {
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Proceso ejecutado con éxito',
+                html: '@TempData["success"].ToString()'
+            })
+        </script>
+    }
+
+
+    @section Scripts {
+        <script src="~/js/perfil/action.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $('#usuariosTable').DataTable({
+                    "language": {
+                        url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                    },
+                    "lengthChange": false
+                });
+            });
+        </script>
+    }

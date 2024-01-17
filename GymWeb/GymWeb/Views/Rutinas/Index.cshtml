@@ -1,0 +1,144 @@
+﻿@model GymWeb.Entities.RutinasView
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="col-lg-12 mb-4 order-0">
+    <div class="card">
+        <div class="d-flex align-items-end row">
+            <div class="col-sm-12">
+                <div class="card-body">
+                    <h5 class="card-title text-primary mb-5">Creación de rutinas</h5>
+                    <form asp-action="AgregarRutina" asp-controller="Rutinas">
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label for="rutina" class="form-label">Nombre de la rutina</label>
+                                <input class="form-control" placeholder="Nombre" id="rutina" asp-for="RutinaSeleccion.Nombre" />
+                            </div>
+                            <div class="col-6">
+                                <label for="rutina" class="form-label">Intensidad</label>
+                                <select class="form-select" id="intensidad" asp-for="RutinaSeleccion.Intensidad">
+                                    <option value="">Seleccione una intensidad</option>
+                                    <option value="Alta">Alta</option>
+                                    <option value="Media">Media</option>
+                                    <option value="Baja">Baja</option>
+                                </select>
+                            </div>
+                            <div class="col mt-3">
+                                <button type="submit" class="btn btn-primary">Crear rutina</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12 mb-4 order-0">
+    <div class="card">
+        <div class="d-flex align-items-end row">
+            <div class="col-sm-12">
+                <div class="card-body">
+                    <h5 class="card-title text-primary mb-5">Asignación de rutinas</h5>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <form asp-action="AgregarRutinaDetalle" asp-controller="Rutinas">
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label for="rutinaNombre" class="form-label">Rutina</label>
+                                        <select class="form-select" id="rutinaNombre" asp-for="RutinaDSeleccion.idRutina">
+                                            <option value="">Seleccione una rutina</option>
+                                            @foreach (var item in Model.Rutinas)
+                                            {
+                                                <option value="@item.IdRutina">@item.Nombre</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="ejercicios" class="form-label">Ejercicios</label>
+                                        <select class="form-select" id="ejercicios" asp-for="RutinaDSeleccion.idEjercicio">
+                                            <option value="">Seleccione un ejercicio</option>
+                                            @foreach(var item in Model.Ejercicios)
+                                            {
+                                                <option value="@item.IdEjercicio">@item.NombreEjercicio</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary">Agregar ejercicio</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+
+                            <div class="table-responsive">
+                                <table class="table table-hover" width="100%" id="tbEjercicios">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre de rutina</th>
+                                            <th>Nombre de ejercicio</th>
+                                            <th>Fecha de ingreso</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.RutinasTable)
+                                        {
+                                            <tr>
+                                                <td>@item.NombreRutina</td>
+                                                <td>@item.NombreEjercicio</td>
+                                                <td>@item.FechaCreacionRutina</td>
+                                                <td>
+                                                    <a class="btn btn-primary" asp-action="EliminarEjercicio" asp-controller="Rutinas" asp-route-id="@item.id">Eliminar</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.Error != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Ha ocurrido un error..',
+            html: '@ViewBag.Mensaje.ToString()'
+        })
+    </script>
+}
+
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tbEjercicios').DataTable({
+                "language": {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                },
+                "lengthChange": false
+            });
+        });
+    </script>
+}

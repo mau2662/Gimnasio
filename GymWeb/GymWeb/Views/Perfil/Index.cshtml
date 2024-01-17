@@ -1,0 +1,104 @@
+﻿@model GymWeb.Entities.UsuarioEnt
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card mb-4">
+    <h5 class="card-header">Datos del perfil</h5>
+    <div class="card-body">
+        <div class="d-flex align-items-start align-items-sm-center gap-4">
+            @{
+                if (Model.FotoPerfil != null)
+                {
+                    string base64String = Convert.ToBase64String(Model.FotoPerfil);
+                    string imgSrc = string.Format("data:image/png;base64,{0}", base64String);
+                    string imgTag = string.Format("<img src='{0}' alt='user-avatar' class='d-block rounded' height='100' width='100' id='uploadedAvatar' />", imgSrc);
+                    <img src="@imgSrc"alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
+                }
+                else
+                {
+                    <img src="~/assets/img/avatars/sin-foto.png" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
+                }
+            }
+            <div class="button-wrapper">
+                <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                    <span class="d-none d-sm-block">Cargar nueva foto</span>
+                    <i class="bx bx-upload d-block d-sm-none"></i>
+                    <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" />
+                </label>
+
+                <p class="text-muted mb-0">Solo se permiten los formatos JPG, GIF or PNG. Tamaño máximo 800K</p>
+            </div>
+        </div>
+    </div>
+    <hr class="my-0" />
+    <div class="card-body">
+        <form id="formAccountSettings" method="post" asp-action="updateProfileInfo" asp-controller="Perfil">
+            <input asp-for="IdUsuario" hidden />
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label for="identificacion" class="form-label">Identificación</label>
+                    <input type="text"
+                           class="form-control"
+                           id="identificacion"
+                           name="Identificacion"
+                           asp-for="Identificacion"
+                           readonly/>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label for="Nombre" class="form-label">Nombre</label>
+                    <input class="form-control" type="text" name="NombreCompleto" id="Nombre" asp-for="NombreCompleto" />
+                </div>
+
+                <div class="mb-3 col-md-6">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input class="form-control"
+                           type="text"
+                           id="email"
+                           name="Correo"
+                           asp-for="Correo"
+                           placeholder="john.doe@example.com" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label for="telefono" class="form-label">Teléfono</label>
+                    <input type="tel"
+                           class="form-control"
+                           id="telefono"
+                           name="Telefono"
+                           asp-for="Telefono"/>
+                </div>
+            </div>
+            <div class="mt-2">
+                <button type="submit" class="btn btn-primary me-2">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (TempData["error"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Ha ocurrido un error..',
+            html: '@TempData["error"].ToString()'
+        })
+    </script>
+}
+
+@if (TempData["success"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Proceso ejecutado con éxito',
+            html: '@TempData["success"].ToString()'
+        })
+    </script>
+}
+
+
+@section Scripts {
+    <script src="~/js/perfil/action.js"></script>
+}

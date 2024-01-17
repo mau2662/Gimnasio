@@ -1,0 +1,166 @@
+﻿@model GymWeb.Entities.UsuarioEnt
+@using GymWeb.Entities
+@{
+    ViewData["Title"] = "ModificarUsuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="card mb-4">
+
+    <div class="card-body">
+
+
+        @if (Model.Estado)
+        {
+            <div class="mb-3 col-12 mb-0">
+
+                    <h5 >Estado del Usuario</h5>
+
+                <div class="alert alert-success">
+                        <h6 class="alert-heading fw-bold mb-1">Este Usuario se encuentra activo</h6>
+                </div>
+            </div>
+
+
+
+                <a href="@Url.Action("CambiarEstadoUsuario","Usuario", new { IdUsuario = Model.IdUsuario , Estado = false })" class="btn btn-outline-danger">Desactivar</a>
+
+
+        }
+        else
+        {
+
+            <div class="mb-3 col-12 mb-0">
+                    <h5>Estado del Usuario</h5>
+                    <div class="alert alert-danger">
+                    <h6 class="alert-heading fw-bold mb-1">Este Usuario se encuentra desactivo</h6>
+                </div>
+            </div>
+
+
+                <a href="@Url.Action("CambiarEstadoUsuario","Usuario", new { IdUsuario = Model.IdUsuario , Estado = true })" class="btn btn-outline-success">Activar</a>
+
+        }
+
+
+    </div>
+
+
+
+</div>
+</div>
+
+
+
+<div class="row">
+<div class="card mb-4">
+    <h5 class="card-header">Datos del perfil</h5>
+    <div class="card-body">
+        <div class="d-flex align-items-start align-items-sm-center gap-4">
+        
+
+            <img src="~/assets/img/avatars/sin-foto.png" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar" />
+            
+                    
+
+    </div>
+    <hr class="my-0" />
+    <div class="card-body">
+        <form id="formAccountSettings" method="post" asp-action="ModificarUsuario" asp-controller="Usuario">
+            <input asp-for="IdUsuario" hidden />
+            <div class="row">
+
+
+
+                    <div class="mb-3 col-md-6">
+                        <label for="Identificacion" class="form-label">Identificación</label>
+                        <input class="form-control"
+                               type="text"
+                               id="Identificacion"
+                               name="Identificacion"
+                               asp-for="Identificacion"/>
+                    </div>
+
+
+
+                <div class="mb-3 col-md-6">
+                    <label for="Nombre" class="form-label">Nombre</label>
+                    <input class="form-control" type="text" name="NombreCompleto" id="Nombre" asp-for="NombreCompleto" />
+                </div>
+
+                <div class="mb-3 col-md-6">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input class="form-control"
+                           type="text"
+                           id="email"
+                           name="Correo"
+                           asp-for="Correo"
+                           placeholder="john.doe@example.com" />
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label for="telefono" class="form-label">Teléfono</label>
+                    <input type="tel"
+                           class="form-control"
+                           id="telefono"
+                           name="Telefono"
+                           asp-for="Telefono" />
+                </div>
+            </div>
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label" for="IdRol">IdRol</label>
+                        <select id="IdRol" name="IdRol" class="select2 form-select">
+                            @if (ViewData["Roles"] != null)
+                            {
+                                foreach (var usuario in ViewData["Roles"] as List<UsuarioEnt>)
+                                {
+                                    <option value="@usuario.IdRol">@usuario.NombreRol</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="">Error al cargar roles</option>
+                            }
+                        </select>
+                    </div>
+
+            <div class="mt-2">
+                <button type="submit" class="btn btn-primary me-2">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</div>
+
+</div>
+
+
+
+@if (TempData["error"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Ha ocurrido un error..',
+            html: '@TempData["error"].ToString()'
+        })
+    </script>
+}
+
+@if (TempData["success"] != null)
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Proceso ejecutado con éxito',
+            html: '@TempData["success"].ToString()'
+        })
+    </script>
+}
+
+
+@section Scripts {
+    <script src="~/js/perfil/action.js"></script>
+}
